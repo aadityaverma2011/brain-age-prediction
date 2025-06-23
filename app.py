@@ -29,7 +29,6 @@ You are a statistical prediction model trained on cognitive neuroscience data.
 Using the profile below, estimate:
 - Predicted Brain Age (just the number)
 - Difference from actual age: Younger, Same, or Older
-- Reason: 1-line technical summary (avoid casual tone)
 
 Input Profile:
 Actual Age: {actual_age}
@@ -43,7 +42,6 @@ Mental Clarity: {brain_fog}/10
 Output Format:
 Predicted Brain Age: <##>  
 Delta: <Younger | Same | Older>  
-Reason: <Short, data-driven reason>
 """
 
         response = model.generate_content(prompt)
