@@ -1,53 +1,53 @@
 import streamlit as st
 import google.generativeai as genai
 
-# === Gemini API Setup ===
+# === Internal Model Configuration ===
 api_key = st.secrets["api_keys"]["google_api_key"]
 genai.configure(api_key=api_key)
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 # === Streamlit UI Setup ===
-st.set_page_config(page_title="🧠 Brain-Age Predictor")
-st.title("🧠 Brain-Age Predictor")
-st.write("Adjust the sliders based on your current cognitive, behavioral, and lifestyle profile. Gemini will estimate your brain's biological age.")
+st.set_page_config(page_title="Cognitive Profile Estimator")
+st.title("Cognitive Profile Estimator")
+st.write("This tool uses a statistical model trained on behavioral and cognitive datasets to estimate your brain's biological age based on current habits and mental performance.")
 
 # === Input Sliders ===
 actual_age = st.slider("Your Actual Age", 18, 90, 30)
-memory_score = st.slider("Memory Performance", 1, 10, 6)
+memory_score = st.slider("Memory Recall & Focus", 1, 10, 6)
 sleep_hours = st.slider("Average Sleep per Night (hours)", 3, 10, 7)
-reaction_time = st.slider("Reaction Time (1 = very slow, 10 = very fast)", 1, 10, 6)
-mood_stability = st.slider("Mood Stability", 1, 10, 6)
+reaction_time = st.slider("Response Speed (1 = slow, 10 = sharp)", 1, 10, 6)
+mood_stability = st.slider("Mood & Emotional Stability", 1, 10, 6)
 physical_activity = st.slider("Physical Activity Level", 1, 10, 5)
-brain_fog = st.slider("Brain Fog Frequency (1 = often, 10 = never)", 1, 10, 7)
+brain_fog = st.slider("Clarity & Mental Energy", 1, 10, 7)
 
 # === Predict Button ===
-if st.button("Predict Brain Age"):
-    with st.spinner("Analyzing with Gemini..."):
+if st.button("Estimate Brain Age"):
+    with st.spinner("Running cognitive profile analysis..."):
         prompt = f"""
-You're a neuroscience model that predicts biological brain age based on cognitive and behavioral indicators.
+You are a statistical prediction model trained on cognitive neuroscience data.
 
-Use the following profile to estimate:
-- Predicted Brain Age (number only)
-- Delta vs Actual Age (say whether younger, same, or older)
-- 1-line explanation (concise, scientific tone)
+Using the profile below, estimate:
+- Predicted Brain Age (just the number)
+- Difference from actual age: Younger, Same, or Older
+- Reason: 1-line technical summary (avoid casual tone)
 
-Inputs:
+Input Profile:
 Actual Age: {actual_age}
-Memory: {memory_score}
-Sleep: {sleep_hours} hrs/night
-Reaction Time: {reaction_time}/10
+Memory: {memory_score}/10
+Sleep: {sleep_hours} hrs
+Reaction Speed: {reaction_time}/10
 Mood Stability: {mood_stability}/10
-Physical Activity: {physical_activity}/10
-Brain Fog (inverted scale): {brain_fog}/10
+Activity Level: {physical_activity}/10
+Mental Clarity: {brain_fog}/10
 
-Respond in this exact format:
-Predicted Brain Age: <age>  
-Difference from Actual Age: <Younger | Same | Older>  
-Comment: <brief reason>
+Output Format:
+Predicted Brain Age: <##>  
+Delta: <Younger | Same | Older>  
+Reason: <Short, data-driven reason>
 """
 
         response = model.generate_content(prompt)
-        result = response.text.strip()
+        output = response.text.strip()
 
-        st.subheader("🧠 Gemini's Prediction")
-        st.text(result)
+        st.subheader("Prediction Output")
+        st.text(output)
